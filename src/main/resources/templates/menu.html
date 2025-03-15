@@ -1,17 +1,35 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
     <div id="menu" th:fragment="menu">
-        <h3>Nawigacja:</h3>
-        <a href="/" target="_self" > strona główna </a> <br>
-        <a href="/chart?type=6h" target="_self" > wykres (6h co 1 min.) </a> <br>
-        <a href="/chart?type=24h" target="_self" > wykres (24h co 5 min.) </a> <br>
-        <a href="/chart?type=24h_out" target="_self" > wykres (zewn. 24h) </a> <br>
-        <a href="/weather_entity" target="_self" > aktualna pogoda </a> <br>
-        <a href="/chart?type=5_days_forecast" target="_self" > prognoza 5 dni</a> <br>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/" target="_self">Strona główna</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/chart?type=6h" target="_self">Wykres 6h</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/chart?type=24h" target="_self">Wykres 24h</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/chart?type=24h_out" target="_self">Wykres 24h na zewnątrz</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/chart?type=5_days_forecast" target="_self">Pogoda na 5 dni</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </div>
 </body>
