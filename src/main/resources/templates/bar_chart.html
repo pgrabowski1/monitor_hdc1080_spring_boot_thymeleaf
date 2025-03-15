@@ -52,7 +52,7 @@
 <body>
 <div id="container">
     <div th:insert="~{menu :: menu}"></div>
-    <div id="logo">
+    <div style="text-align: center" id="logo">
         <h1 th:if="${type} == '6h'"> Wykres 6h </h1>
         <h1 th:if="${type} == '24h'"> Wykres 24h </h1>
         <h1 th:if="${type} == '24h_out'"> Wykres 24h (temperatura na zewnątrz) </h1>
