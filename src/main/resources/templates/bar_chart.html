@@ -16,6 +16,9 @@
     <div style="text-align: center" id="logo" class="mt-4">
         <h2><p th:text="${pageDescription}"></p></h2>
     </div>
+    <div class="mt-4">
+        <h7><b th:text="${chartDescription}"></b></h7>
+    </div>
     <div id="chart"></div>
     <script th:inline="javascript">
 
@@ -67,18 +70,13 @@
                 categories: timestamps
             },
             legend: {
-                position: "top",
+                position: "bottom",
                 horizontalAlign: "right",
-                floating: true,
                 offsetY: 40
             },
             fill: {
                 opacity: 1
-            },
-            title: {
-                text: chartDescription,
-                align: "left"
-            },
+            }
         };
 
         var chart = new ApexCharts(document.getElementById("chart"), options);

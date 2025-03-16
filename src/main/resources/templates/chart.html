@@ -48,6 +48,9 @@
     <div id="logo" style="text-align: center" class="mt-4">
         <h2><p th:text="${pageDescription}"></p></h2>
     </div>
+    <div class="mt-4">
+        <h7><b th:text="${chartDescription}"></b></h7>
+    </div>
     <div id="chart"></div>
 </div>
 <script th:inline="javascript">
@@ -87,10 +90,6 @@
         stroke: {
             curve: "smooth"
         },
-        title: {
-            text: chartDescription,
-            align: "left"
-        },
         grid: {
             borderColor: "#e7e7e7",
             row: {
@@ -98,19 +97,9 @@
                 opacity: 0.5
             }
         },
-        // markers: {
-        //     size: 1
-        // },
-        xaxis: {
-            categories: timestamps,
-            title: {
-                text: "czas"
-            }
-        },
         legend: {
-            position: "top",
+            position: "bottom",
             horizontalAlign: "right",
-            floating: true,
             offsetY: -25,
             offsetX: -5
         }
