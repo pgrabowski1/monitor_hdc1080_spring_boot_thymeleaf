@@ -1,5 +1,6 @@
 package com.example.googlechartsthymeleaf.controller;
 
+import com.example.googlechartsthymeleaf.dto.ChartDataDto;
 import com.example.googlechartsthymeleaf.dto.ChartType;
 import com.example.googlechartsthymeleaf.service.ChartDataService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
@@ -35,19 +35,22 @@ public class ChartController {
             return "chartDoesNotExist";
         }
 
-        List<List<Object>> data = switch (chartType.get()) {
+        ChartDataDto data = switch (chartType.get()) {
             case ROOM_6H -> chartDataService.getChartData6H();
             case ROOM_24H -> chartDataService.getChartData24H();
             case OUTSIDE_24H -> chartDataService.getChartData24hOutside();
             case OUTSIDE_5_DAYS_FORECAST -> chartDataService.getChartDataFiveDays();
         };
 
-        model.addAttribute("chartData", data);
-        model.addAttribute("type", type);
-
-        if (data.isEmpty()) {
+        if (data == null) {
             return "chartError";
         }
+
+        model.addAttribute("temps", data.getTemperatures());
+        model.addAttribute("hums", data.getHumidities());
+        model.addAttribute("timestamps", data.getTimestamps());
+        model.addAttribute("pageDescription", chartType.get().getPageDescription());
+        model.addAttribute("chartDescription", chartType.get().getChartDescription());
 
         return switch (chartType.get()) {
             case ROOM_6H, ROOM_24H, OUTSIDE_24H -> "chart";

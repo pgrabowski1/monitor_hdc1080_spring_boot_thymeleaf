@@ -1,5 +1,6 @@
 package com.example.googlechartsthymeleaf.service;
 
+import com.example.googlechartsthymeleaf.dto.ChartDataDto;
 import com.example.googlechartsthymeleaf.dto.SensorState;
 import com.example.googlechartsthymeleaf.entity.outside_weather.TempHumTimeOnly;
 import com.example.googlechartsthymeleaf.entity.room_data.Temperature;
@@ -45,64 +46,45 @@ public class ChartDataService {
     /**
      * We're retrieving data from database and returning in proper format (for 24h chart).
      */
-    public List<List<Object>> getChartData24H() {
-        return formatDataForChart(temperatureRepo.findLastMeasurements(LocalDateTime.now().minusHours(24), 5));
+    public ChartDataDto getChartData24H() {
+        return mapTemperatureToChartDataDto(temperatureRepo.findLastMeasurements(LocalDateTime.now().minusHours(24), 5));
     }
 
     /**
      * We're retrieving data from database and returning in proper format (for 6h chart).
      */
-    public List<List<Object>> getChartData6H() {
-        return formatDataForChart(temperatureRepo.findLastMeasurements(LocalDateTime.now().minusHours(6), 1));
+    public ChartDataDto getChartData6H() {
+        return mapTemperatureToChartDataDto(temperatureRepo.findLastMeasurements(LocalDateTime.now().minusHours(6), 1));
     }
 
-    public List<List<Object>> getChartData24hOutside() {
+    public ChartDataDto getChartData24hOutside() {
         long epoch24HoursFromNow = LocalDateTime.now().minusHours(24)
                 .atZone(ZoneId.systemDefault())
                 .toEpochSecond();
-        return formatDataForChart(currentWeatherRepo.getTempHumTimeFromLast24Hours(epoch24HoursFromNow));
+
+        return mapTimeHumOnlyToChartDataDto(currentWeatherRepo.getTempHumTimeFromLast24Hours(epoch24HoursFromNow));
     }
 
-    /**
-     * We're formatting data so tht it is readable by GoogleChart.
-     */
-    private List<List<Object>> formatDataForChart(List<Temperature> list) {
-        //list with subsequent rows containing time, temperature, humidity in each row
-        List<List<Object>> targetList = new ArrayList<>();
+    public ChartDataDto getChartDataFiveDays() {
+        RootFiveDays fiveDaysForecast = weatherService.getFiveDaysForecast();
+        ArrayList<com.example.googlechartsthymeleaf.json_model.List> list = fiveDaysForecast.getList();
 
-        if (!list.isEmpty()) {
-            list.forEach(temperature -> {
-                String czas = temperature.getTime().toLocalTime().truncatedTo(ChronoUnit.MINUTES).toString();
-                double temp = temperature.getTemperature();
-                double hum = temperature.getHumidity();
+        ChartDataDto chartDataDto = ChartDataDto.builder()
+                .temperatures(new ArrayList<>())
+                .humidities(new ArrayList<>())
+                .timestamps(new ArrayList<>())
+                .build();
 
-                //adding another row to the list
-                targetList.add(List.of(czas, temp, hum));
-
-            });
+        for (com.example.googlechartsthymeleaf.json_model.List t : list) {
+            chartDataDto.getTemperatures().add(t.getMain().getTemp().floatValue());
+            chartDataDto.getHumidities().add(t.getMain().getHumidity().floatValue());
+            chartDataDto.getTimestamps().add(TimeUtils.epochToLocalDateTime(t.getDt().longValue(), fiveDaysForecast.getCity().getTimezone())
+                    .truncatedTo(ChronoUnit.SECONDS)
+                    .toString()
+                    .replace("T", " "));
         }
 
-        return targetList;
-    }
-
-    private List<List<Object>> formatDataForChart(Set<TempHumTimeOnly> list) {
-        return list.stream()
-                .map(t -> List.of(t.getHourMinuteFromUnixTime(), t.temperature(), ((Object) t.humidity())))
-                .toList();
-    }
-
-    public List<List<Object>> getChartDataFiveDays() {
-        RootFiveDays fiveDaysForecast = weatherService.getFiveDaysForecast();
-        return fiveDaysForecast
-                .getList()
-                .stream()
-                .map(list -> {
-                    List<Object> row = new ArrayList<>();
-                    row.add(TimeUtils.epochToLocalDateTime(list.getDt().longValue(), fiveDaysForecast.getCity().getTimezone()).truncatedTo(ChronoUnit.SECONDS).toString().replace("T", " "));
-                    row.add(list.getMain().getTemp());
-                    return row;
-                })
-                .toList();
+        return chartDataDto;
     }
 
     @Scheduled(cron = "${home-assistant.data-fetch-cron}")
@@ -153,5 +135,37 @@ public class ChartDataService {
                 .retrieve()
                 .bodyToMono(SensorState.class)
                 .block();
+    }
+
+    private static ChartDataDto mapTemperatureToChartDataDto(List<Temperature> lastMeasurements) {
+        ChartDataDto chartDataDto = ChartDataDto.builder()
+                .temperatures(new ArrayList<>())
+                .humidities(new ArrayList<>())
+                .timestamps(new ArrayList<>())
+                .build();
+
+        for (Temperature t : lastMeasurements) {
+            chartDataDto.getTemperatures().add(t.getTemperature());
+            chartDataDto.getHumidities().add(t.getHumidity());
+            chartDataDto.getTimestamps().add(t.getTime().toLocalTime().truncatedTo(ChronoUnit.MINUTES).toString());
+        }
+
+        return chartDataDto;
+    }
+
+    private static ChartDataDto mapTimeHumOnlyToChartDataDto(Set<TempHumTimeOnly> list) {
+        ChartDataDto chartDataDto = ChartDataDto.builder()
+                .temperatures(new ArrayList<>())
+                .humidities(new ArrayList<>())
+                .timestamps(new ArrayList<>())
+                .build();
+
+        for (TempHumTimeOnly t : list) {
+            chartDataDto.getTemperatures().add(t.temperature().floatValue());
+            chartDataDto.getHumidities().add(Float.valueOf(t.humidity()));
+            chartDataDto.getTimestamps().add(t.getHourMinuteFromUnixTime());
+        }
+
+        return chartDataDto;
     }
 }
