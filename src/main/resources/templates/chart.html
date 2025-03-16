@@ -73,11 +73,11 @@
 <body>
 <div id="container">
     <div th:insert="~{menu :: menu}"></div>
-    <div id="logo" style="text-align: center">
-        <h1 th:if="${type} == '6h'"> Wykres 6h </h1>
-        <h1 th:if="${type} == '24h'"> Wykres 24h </h1>
-        <h1 th:if="${type} == '24h_out'"> Wykres 24h (temperatura na zewnątrz) </h1>
-        <h1 th:if="${type} == '5_days_forecast'"> Prognoza na 5 dni </h1>
+    <div id="logo" style="text-align: center" class="mt-4">
+        <h2 th:if="${type} == '6h'"> Wykres 6h </h2>
+        <h2 th:if="${type} == '24h'"> Wykres 24h </h2>
+        <h2 th:if="${type} == '24h_out'"> Wykres 24h (temperatura na zewnątrz) </h2>
+        <h2 th:if="${type} == '5_days_forecast'"> Prognoza na 5 dni </h2>
     </div>
     <div id="wykres"></div>
 </div>
