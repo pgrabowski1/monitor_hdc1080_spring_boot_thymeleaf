@@ -16,44 +16,42 @@
     </style>
 </head>
 <body>
-<div id="container">
-    <div th:insert="~{menu :: menu}"></div>
-    <div id="logo">
-        <h2 style="text-align: center">Aktualna pogoda</h2>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-bordered table-sm table-hover">
-            <thead></thead>
-            <tbody>
-            <tr>
-                <td colspan="2"><p th:text="'prognoza dla: '+${entity.getCityName()}"></p></td>
-            </tr>
-            <tr>
-                <td colspan="2"><p th:text="'opis: '+${entity.getWeatherDescription()}"></p></td>
-            </tr>
-            <tr>
-                <td><p th:text="'temperatura: '+${entity.getTemperature()}+' ℃'"></p></td>
-                <td><p th:text="'temperatura odczuwalna: '+${entity.getPerceivedTemperature()}+' ℃'"></p></td>
-            </tr>
-            <tr>
-                <td><p th:text="'wilgotność powietrza: '+${entity.getHumidity()}+' %'"></p></td>
-                <td><p th:text="'ciśnienie atmosferyczne: '+${entity.getPressureSeaLevel()}+' hPa'"></p></td>
-            </tr>
-            <tr>
-                <td><p th:text="'wschód słońca: '+${entity.getSunriseTime()}"></p></td>
-                <td><p th:text="'zachód słońca: '+${entity.getSunsetTime()}"></p></td>
-            </tr>
-            <tr>
-                <td><p th:text="'wiatr: '+${entity.getWindSpeed()}+' m/s'"></p></td>
-                <td><p th:text="'wiatru(poryw): '+${entity.getWindGustSpeed()}+' m/s'"></p></td>
-            </tr>
-            <tr>
-                <td colspan="2"><p th:text="'pomiaru dokonano: '+${entity.getPrettyMeasurementTime()}"></p></td>
-            </tr>
-            </tbody>
+<div th:insert="~{menu :: menu}"></div>
+<div id="logo">
+    <h2 style="text-align: center">Aktualna pogoda</h2>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered table-sm table-hover">
+        <thead></thead>
+        <tbody>
+        <tr>
+            <td colspan="2"><p th:text="'prognoza dla: '+${entity.getCityName()}"></p></td>
+        </tr>
+        <tr>
+            <td colspan="2"><p th:text="'opis: '+${entity.getWeatherDescription()}"></p></td>
+        </tr>
+        <tr>
+            <td><p th:text="'temperatura: '+${entity.getTemperature()}+' ℃'"></p></td>
+            <td><p th:text="'temperatura odczuwalna: '+${entity.getPerceivedTemperature()}+' ℃'"></p></td>
+        </tr>
+        <tr>
+            <td><p th:text="'wilgotność powietrza: '+${entity.getHumidity()}+' %'"></p></td>
+            <td><p th:text="'ciśnienie atmosferyczne: '+${entity.getPressureSeaLevel()}+' hPa'"></p></td>
+        </tr>
+        <tr>
+            <td><p th:text="'wschód słońca: '+${entity.getSunriseTime()}"></p></td>
+            <td><p th:text="'zachód słońca: '+${entity.getSunsetTime()}"></p></td>
+        </tr>
+        <tr>
+            <td><p th:text="'wiatr: '+${entity.getWindSpeed()}+' m/s'"></p></td>
+            <td><p th:text="'wiatru(poryw): '+${entity.getWindGustSpeed()}+' m/s'"></p></td>
+        </tr>
+        <tr>
+            <td colspan="2"><p th:text="'pomiaru dokonano: '+${entity.getPrettyMeasurementTime()}"></p></td>
+        </tr>
+        </tbody>
 
-        </table>
-    </div>
+    </table>
 </div>
 </body>
 </html>
