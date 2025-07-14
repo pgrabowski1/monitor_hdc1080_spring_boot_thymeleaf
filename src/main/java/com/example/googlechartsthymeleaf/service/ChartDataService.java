@@ -78,10 +78,10 @@ public class ChartDataService {
         for (com.example.googlechartsthymeleaf.json_model.List t : list) {
             chartDataDto.getTemperatures().add(t.getMain().getTemp().floatValue());
             chartDataDto.getHumidities().add(t.getMain().getHumidity().floatValue());
-            chartDataDto.getTimestamps().add(TimeUtils.epochToLocalDateTime(t.getDt().longValue(), fiveDaysForecast.getCity().getTimezone())
-                    .truncatedTo(ChronoUnit.SECONDS)
-                    .toString()
-                    .replace("T", " "));
+
+            LocalDateTime localDateTime = TimeUtils.epochToLocalDateTime(t.getDt().longValue(), fiveDaysForecast.getCity().getTimezone());
+            String formattedTime = TimeUtils.localDateTimeToString(localDateTime, TimeUtils.DAY_MONTH_HOUR_MINUTES);
+            chartDataDto.getTimestamps().add(formattedTime);
         }
 
         return chartDataDto;
