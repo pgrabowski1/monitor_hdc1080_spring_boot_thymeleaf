@@ -68,6 +68,7 @@ public class ChartDataService {
     public ChartDataDto getChartDataFiveDays() {
         RootFiveDays fiveDaysForecast = weatherService.getFiveDaysForecast();
         ArrayList<com.example.googlechartsthymeleaf.json_model.List> list = fiveDaysForecast.getList();
+        LocalDateTime lastDate = null;
 
         ChartDataDto chartDataDto = ChartDataDto.builder()
                 .temperatures(new ArrayList<>())
@@ -80,7 +81,14 @@ public class ChartDataService {
             chartDataDto.getHumidities().add(t.getMain().getHumidity().floatValue());
 
             LocalDateTime localDateTime = TimeUtils.epochToLocalDateTime(t.getDt().longValue(), fiveDaysForecast.getCity().getTimezone());
-            String formattedTime = TimeUtils.localDateTimeToString(localDateTime, TimeUtils.DAY_MONTH_HOUR_MINUTES);
+
+            String formattedTime;
+            if (lastDate == null || !lastDate.toLocalDate().equals(localDateTime.toLocalDate())) {
+                lastDate = localDateTime;
+                formattedTime = TimeUtils.localDateTimeToString(localDateTime, TimeUtils.DAY_MONTH_HOUR_MINUTES);
+            } else {
+                formattedTime = localDateTime.toLocalTime().toString();
+            }
             chartDataDto.getTimestamps().add(formattedTime);
         }
 
