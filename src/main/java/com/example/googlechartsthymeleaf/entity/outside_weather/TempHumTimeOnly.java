@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
 
-public record TempHumTimeOnly(Double temperature, Integer humidity, Long measurementTime) {
+public record TempHumTimeOnly(Double temperature, Integer humidity, Long measurementTime, Short timezoneOffset) {
 
     public String getHourMinuteFromUnixTime() {
         return LocalTime.ofInstant(Instant.ofEpochSecond(measurementTime), TimeZone.getDefault().toZoneId())

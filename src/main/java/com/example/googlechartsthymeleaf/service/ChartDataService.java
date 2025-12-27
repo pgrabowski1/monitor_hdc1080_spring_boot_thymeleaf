@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -67,32 +67,15 @@ public class ChartDataService {
 
     public ChartDataDto getChartDataFiveDays() {
         RootFiveDays fiveDaysForecast = weatherService.getFiveDaysForecast();
-        ArrayList<com.example.googlechartsthymeleaf.json_model.List> list = fiveDaysForecast.getList();
-        LocalDateTime lastDate = null;
+        List<TempHumTimeOnly> list = fiveDaysForecast.getList()
+                .stream()
+                .map(l -> new TempHumTimeOnly(l.getMain().getTemp(),
+                        l.getMain().getHumidity(),
+                        l.getDt().longValue(),
+                        fiveDaysForecast.getCity().getTimezone()))
+                .toList();
 
-        ChartDataDto chartDataDto = ChartDataDto.builder()
-                .temperatures(new ArrayList<>())
-                .humidities(new ArrayList<>())
-                .timestamps(new ArrayList<>())
-                .build();
-
-        for (com.example.googlechartsthymeleaf.json_model.List t : list) {
-            chartDataDto.getTemperatures().add(t.getMain().getTemp().floatValue());
-            chartDataDto.getHumidities().add(t.getMain().getHumidity().floatValue());
-
-            LocalDateTime localDateTime = TimeUtils.epochToLocalDateTime(t.getDt().longValue(), fiveDaysForecast.getCity().getTimezone());
-
-            String formattedTime;
-            if (lastDate == null || !lastDate.toLocalDate().equals(localDateTime.toLocalDate())) {
-                lastDate = localDateTime;
-                formattedTime = TimeUtils.localDateTimeToString(localDateTime, TimeUtils.DAY_MONTH_HOUR_MINUTES);
-            } else {
-                formattedTime = localDateTime.toLocalTime().toString();
-            }
-            chartDataDto.getTimestamps().add(formattedTime);
-        }
-
-        return chartDataDto;
+        return mapTimeHumOnlyToChartDataDto(list);
     }
 
     @Scheduled(cron = "${home-assistant.data-fetch-cron}")
@@ -161,17 +144,30 @@ public class ChartDataService {
         return chartDataDto;
     }
 
-    private static ChartDataDto mapTimeHumOnlyToChartDataDto(Set<TempHumTimeOnly> list) {
+    private static ChartDataDto mapTimeHumOnlyToChartDataDto(Collection<TempHumTimeOnly> list) {
         ChartDataDto chartDataDto = ChartDataDto.builder()
                 .temperatures(new ArrayList<>())
                 .humidities(new ArrayList<>())
                 .timestamps(new ArrayList<>())
                 .build();
 
+        LocalDateTime lastDate = null;
+
         for (TempHumTimeOnly t : list) {
             chartDataDto.getTemperatures().add(t.temperature().floatValue());
             chartDataDto.getHumidities().add(Float.valueOf(t.humidity()));
-            chartDataDto.getTimestamps().add(t.getHourMinuteFromUnixTime());
+
+
+            LocalDateTime localDateTime = TimeUtils.epochToLocalDateTime(t.measurementTime(), t.timezoneOffset());
+            String formattedTime;
+            if (lastDate == null || !lastDate.toLocalDate().equals(localDateTime.toLocalDate())) {
+                lastDate = localDateTime;
+                formattedTime = TimeUtils.localDateTimeToString(localDateTime, TimeUtils.DAY_MONTH_HOUR_MINUTES);
+            } else {
+                formattedTime = t.getHourMinuteFromUnixTime();
+            }
+
+            chartDataDto.getTimestamps().add(formattedTime);
         }
 
         return chartDataDto;
