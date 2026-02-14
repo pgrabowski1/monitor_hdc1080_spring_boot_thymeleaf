@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:17
+    container_name: postgres17
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=chata_database
+      - POSTGRES_PASSWORD=pgbercik6
+      - POSTGRES_DB=chata_database
+    volumes:
+      - db_postgres17:/var/lib/postgresql/data
+volumes:
+  db_postgres17:
+    driver: local
