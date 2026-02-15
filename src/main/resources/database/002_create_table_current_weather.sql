@@ -1,0 +1,27 @@
+CREATE TABLE chata_database.current_weather
+(
+    id                       bigserial NOT NULL,
+    city_name                varchar(255) NULL,
+    country                  varchar(255) NULL,
+    humidity                 int4 NULL,
+    latitude                 float8 NULL,
+    longitude                float8 NULL,
+    max_measured_temperature float8 NULL,
+    measurement_time         int8 NULL,
+    min_measured_temperature float8 NULL,
+    perceived_temperature    float8 NULL,
+    pressure_ground_level    int4 NULL,
+    pressure_sea_level       int4 NULL,
+    sunrise_time             int8 NULL,
+    sunset_time              int8 NULL,
+    temperature              float8 NULL,
+    timezone_offset          int2 NULL,
+    visibility               int2 NULL,
+    weather_condition_id     int4 NULL,
+    weather_description      varchar(255) NULL,
+    weather_icon_id          varchar(255) NULL,
+    wind_degree              int2 NULL,
+    wind_gust_speed          float4 NULL,
+    wind_speed               float4 NULL,
+    CONSTRAINT current_weather_pkey PRIMARY KEY (id)
+);
