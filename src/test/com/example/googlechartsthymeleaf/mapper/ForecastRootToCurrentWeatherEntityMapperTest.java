@@ -24,7 +24,7 @@ class ForecastRootToCurrentWeatherEntityMapperTest {
     @BeforeEach
     public void init() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        File file = new File("src/main/resources/sample_response.json");
+        File file = new File("src/test/resources/sample_response.json");
         forecastRoot = objectMapper.readValue(file, ForecastRoot.class);
     }
 
