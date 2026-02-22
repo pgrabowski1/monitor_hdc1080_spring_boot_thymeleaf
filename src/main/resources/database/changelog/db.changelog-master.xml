@@ -2,14 +2,10 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-
-    <changeSet id="001_user_and_schema" author="pg" context="prod">
-        <sqlFile path="database/001_user_and_schema.sql"/>
+    <changeSet id="001_create_table_current_weather" author="pg" context="prod">
+        <sqlFile path="database/001_create_table_current_weather.sql"/>
     </changeSet>
-    <changeSet id="002_create_table_current_weather" author="pg" context="prod">
-        <sqlFile path="database/002_create_table_current_weather.sql"/>
-    </changeSet>
-    <changeSet id="003_create_table_my_room" author="pg" context="prod">
-        <sqlFile path="database/003_create_table_my_room.sql"/>
+    <changeSet id="002_create_table_my_room" author="pg" context="prod">
+        <sqlFile path="database/002_create_table_my_room.sql"/>
     </changeSet>
 </databaseChangeLog>

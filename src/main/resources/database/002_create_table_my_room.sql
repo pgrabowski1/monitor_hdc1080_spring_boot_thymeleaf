@@ -1,4 +1,4 @@
-CREATE TABLE chata_database.my_room
+CREATE TABLE my_room
 (
     id          bigserial NOT NULL,
     humidity    float4    NOT NULL,

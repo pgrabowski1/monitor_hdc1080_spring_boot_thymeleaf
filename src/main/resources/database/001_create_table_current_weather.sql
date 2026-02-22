@@ -1,4 +1,4 @@
-CREATE TABLE chata_database.current_weather
+CREATE TABLE current_weather
 (
     id                       bigserial NOT NULL,
     city_name                varchar(255) NULL,

@@ -71,7 +71,6 @@
 				<version>5.0.1</version>
 				<configuration>
 					<propertyFile>liquibase.properties</propertyFile>
-					<defaultSchemaName>chata_database</defaultSchemaName>
 				</configuration>
 			</plugin>
 		</plugins>
