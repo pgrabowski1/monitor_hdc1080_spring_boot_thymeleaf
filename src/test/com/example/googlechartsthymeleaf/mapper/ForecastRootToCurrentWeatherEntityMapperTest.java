@@ -9,8 +9,6 @@ import com.example.googlechartsthymeleaf.json_model.Wind;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,13 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
 class ForecastRootToCurrentWeatherEntityMapperTest {
 
     private static ForecastRoot forecastRoot;
-
-    @Autowired
-    private ForecastRootToCurrentWeatherEntityMapper mapper;
 
     @BeforeEach
     public void init() throws IOException {
@@ -37,7 +31,7 @@ class ForecastRootToCurrentWeatherEntityMapperTest {
     @Test
     void should_map_all_fields_correctly() {
         //GIVEN-WHEN
-        CurrentWeatherEntity mappedEntity = mapper.apply(forecastRoot);
+        CurrentWeatherEntity mappedEntity = ForecastRootToCurrentWeatherEntityMapper.apply(forecastRoot);
 
         //THEN
         assertEquals(mappedEntity.getLatitude(), forecastRoot.getCoord().getLat());
@@ -80,7 +74,7 @@ class ForecastRootToCurrentWeatherEntityMapperTest {
     @Test
     void shouldThrowExceptionWhenWeatherListIsEmpty() {
         forecastRoot.getWeather().clear();
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mapper.apply(forecastRoot));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ForecastRootToCurrentWeatherEntityMapper.apply(forecastRoot));
         assertEquals("API returned no Weather object", exception.getMessage());
     }
 }

@@ -3,19 +3,13 @@ package com.example.googlechartsthymeleaf.mapper;
 import com.example.googlechartsthymeleaf.dto.CurrentWeatherDto;
 import com.example.googlechartsthymeleaf.entity.outside_weather.CurrentWeatherEntity;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
 class CurrentWeatherEntityToCurrentWeatherDtoMapperTest {
-
-    @Autowired
-    private CurrentWeatherEntityToCurrentWeatherDtoMapper mapper;
 
     @Test
     void shouldMapAllFieldsCorrectly() {
@@ -23,7 +17,7 @@ class CurrentWeatherEntityToCurrentWeatherDtoMapperTest {
         CurrentWeatherEntity sourceEntity = CurrentWeatherEntityTestResource.getCurrentWeatherEntity();
 
         //WHEN
-        CurrentWeatherDto dto = mapper.apply(sourceEntity);
+        CurrentWeatherDto dto = CurrentWeatherEntityToCurrentWeatherDtoMapper.apply(sourceEntity);
 
         //THEN
         assertEquals(sourceEntity.getCityName(), dto.getCityName());

@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class WeatherController {
 
     private final WeatherService weatherService;
-    private final CurrentWeatherEntityToCurrentWeatherDtoMapper mapper;
 
     @GetMapping("/weather_entity")
     String getCurrWeatherEntity(Model model) {
-        model.addAttribute("entity", mapper.apply(weatherService.getWeatherForecast()));
+        model.addAttribute("entity", CurrentWeatherEntityToCurrentWeatherDtoMapper.apply(weatherService.getWeatherForecast()));
 
         return "weather_entity";
     }

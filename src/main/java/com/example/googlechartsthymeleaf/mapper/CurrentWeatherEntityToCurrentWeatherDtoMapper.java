@@ -3,12 +3,10 @@ package com.example.googlechartsthymeleaf.mapper;
 import com.example.googlechartsthymeleaf.dto.CurrentWeatherDto;
 import com.example.googlechartsthymeleaf.entity.outside_weather.CurrentWeatherEntity;
 import com.example.googlechartsthymeleaf.util.TimeUtils;
-import org.springframework.stereotype.Component;
 
-@Component
 public class CurrentWeatherEntityToCurrentWeatherDtoMapper {
 
-    public CurrentWeatherDto apply(CurrentWeatherEntity entity) {
+    public static CurrentWeatherDto apply(CurrentWeatherEntity entity) {
         return CurrentWeatherDto.builder()
                 .cityName(entity.getCityName())
                 .weatherDescription(entity.getWeatherDescription())

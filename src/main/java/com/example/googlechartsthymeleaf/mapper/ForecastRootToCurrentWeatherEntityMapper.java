@@ -3,11 +3,9 @@ package com.example.googlechartsthymeleaf.mapper;
 import com.example.googlechartsthymeleaf.entity.outside_weather.CurrentWeatherEntity;
 import com.example.googlechartsthymeleaf.json_model.ForecastRoot;
 import com.example.googlechartsthymeleaf.json_model.Weather;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ForecastRootToCurrentWeatherEntityMapper {
-    public CurrentWeatherEntity apply(ForecastRoot forecastRoot) {
+    public static CurrentWeatherEntity apply(ForecastRoot forecastRoot) {
 
         if (forecastRoot.getWeather().isEmpty()) {
             throw new IllegalArgumentException("API returned no Weather object");

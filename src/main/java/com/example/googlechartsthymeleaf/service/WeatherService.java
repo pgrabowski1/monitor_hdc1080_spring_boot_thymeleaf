@@ -30,7 +30,6 @@ public class WeatherService {
     private static final String LANGUAGE = "pl";
     private static final Integer CNT = 40;
 
-    private final ForecastRootToCurrentWeatherEntityMapper mapper;
     private final CurrentWeatherRepo currentWeatherRepo;
     private final WebClient openApiClient;
 
@@ -58,7 +57,7 @@ public class WeatherService {
     @Scheduled(cron = "${open-api.fetch-weather-interval}")
     public void saveWeatherToDb() {
         log.info("Fetching weather forecast from openweathermap API");
-        CurrentWeatherEntity currentWeatherEntity = mapper.apply(getWeatherFromApi());
+        CurrentWeatherEntity currentWeatherEntity = ForecastRootToCurrentWeatherEntityMapper.apply(getWeatherFromApi());
 
         log.info("Saving weather forecast to database");
         currentWeatherRepo.save(currentWeatherEntity);
